@@ -1,0 +1,28 @@
+body {
+  opacity: 0.9;
+  background: url("./trail-run.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+h1 {
+  color: #FF9900 
+}
+h3 {
+  color: #FF9900 
+}
+
+.jumbotron {
+  background-color: #3399FF
+}
+.navbar-default .navbar-brand {
+    color: #FF9900;
+}
+.btn {
+}

@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>run guru</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename = 'css/starter-template.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index">run guru</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index">Home</a></li>
+            <li><a href="slides">Slides</a></li>
+            <li><a href="https://www.linkedin.com/in/edwardsantos">LinkedIn</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <br><br>
+    <br><br>
+
+    <div class="container">
+      <div class="row">
+        <h1>run guru</h1>
+      </div>
+    </div>    
+
+    <div class = "container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="jumbotron">
+          <h3>Select your marathon pace</h3>
+          <form  action="/output" method="GET">
+              <label for="mpace"><p style = "color:white">marathon pace </p></label>
+              <select id="mpace" name="mpace">
+                <option value="2.25">2:15</option>
+                <option value="2.50">2:30</option>
+                <option value="2.75">2:45</option>
+                <option value="3.00">3:00</option>
+                <option value="3.25">3:15</option>
+                <option value="3.50">3:30</option>
+                <option value="3.75">3:45</option>
+                <option value="4.00">4:00</option>
+                <option value="4.25">4:15</option>
+                <option value="4.50">4:30</option>
+                <option value="4.75">4:45</option>
+                <option value="5.00">5:00</option>
+                <option value="5.25">5:15</option>
+                <option value="5.50">5:30</option>
+                <option value="5.75">5:45</option>
+                <option value="6.00">6:00</option>
+              </select>
+            <h3>Enter your recent runs</h3>
+            <div class="form-group">
+              <label for="day1"><p style = "color:white">yesterday </p></label>
+              <select id="day1" name="day1">
+                <option value="rest">rest</option>
+                <option value="easy">easy</option>
+                <option value="moderate">moderate</option>
+                <option value="hard">hard</option>
+                <option value="epic">epic</option>
+              </select>
+              <br>
+              <label for="day2"><p style = "color:white">two days ago </p></label>
+              <select id="day2" name="day2">
+                <option value="rest">rest</option>
+                <option value="easy">easy</option>
+                <option value="moderate">moderate</option>
+                <option value="hard">hard</option>
+                <option value="epic">epic</option>
+              </select>
+              <br>
+              <label for="day3"><p style = "color:white">three days ago </p></label>
+              <select id="day3" name="day3">
+                <option value="rest">rest</option>
+                <option value="easy">easy</option>
+                <option value="moderate">moderate</option>
+                <option value="hard">hard</option>
+                <option value="epic">epic</option>
+              </select>
+              <br>
+          <div>
+            <button type="submit" class="btn btn-default btn-lg">Go!</button>
+          </div>
+            </div>
+          </div>
+        </form>
+      </div>
+   </div>    
+
+   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+   <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
