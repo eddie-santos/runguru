@@ -10,17 +10,21 @@ from model import *
 # db is the database containing all relevant data
 db = mdb.connect(user="root", host="localhost", db="runnersdb", charset='utf8')
 
-# method: index()
-# function: renders home page
 @app.route('/')
 @app.route('/index')
 def index():
+    """
+    function: renders homepage
+    """
+
     return render_template("index.html")
 
-# method: output()
-# function: calculates answer and renders results
 @app.route('/output')
 def output():
+    """
+    function: calculates answer and renders results
+    """
+
     # reads in pace and activities from options
     mpace_hr = float(request.args.get('mpace'))
     day1 = request.args.get('day1')
@@ -35,46 +39,52 @@ def output():
         # list of runners
         good_runners = pd.read_sql("SELECT * FROM good_runners;",db)
 
-        # daily metrics for runners
-        days = good_runners['days_to_marathon']
-        diffs = good_runners['run_difficulty'].astype(int)
-        stresses = good_runners['run_stress']
-
-        # pdfs for different run classes
-        easy_pdf = pd.read_sql("SELECT * FROM easy_pdf",db)['0'].tolist()
-        mod_pdf = pd.read_sql("SELECT * FROM mod_pdf",db)['0'].tolist()
-        hard_pdf = pd.read_sql("SELECT * FROM hard_pdf",db)['0'].tolist()
-        epic_pdf = pd.read_sql("SELECT * FROM epic_pdf",db)['0'].tolist()
-
-        # intensities for different run classes
-        intensity_ez = pd.read_sql("SELECT * FROM easy_ints",db)['0'].tolist()
-        intensity_m = pd.read_sql("SELECT * FROM mod_ints",db)['0'].tolist()
-        intensity_h = pd.read_sql("SELECT * FROM hard_ints",db)['0'].tolist()
-        intensity_ep = pd.read_sql("SELECT * FROM epic_ints",db)['0'].tolist()
-
         # markov transition probabilities
         prob_table = pd.read_sql("SELECT * FROM act_prob",db)
 
-    # combines pdfs and intensities to a dictionary
-    pdfs = {0:[0],1:easy_pdf,2:mod_pdf,3:hard_pdf,4:epic_pdf}
-    intensities = {0:[0],1:intensity_ez,2:intensity_m,3:intensity_h,4:intensity_ep}
-
-    # determines difficulty, day_class, stress, and intensity from user input
+    # daily metrics for runners
+    days = good_runners['days_to_marathon']
+    diffs = good_runners['run_difficulty'].astype(int)
+    stresses = good_runners['run_stress']
     difficulty = get_difficulty(prob_table,user_pattern)
     day_class = get_class(difficulty)
-    stress = get_stress(pdfs,difficulty)
-    intensity = get_intensity(difficulty,intensities)
+
+    with db:
+        # get pdf and ints tables for stress and intensity
+        # based on difficulty
+        if difficulty == 0:
+            pdf = [0]
+            ints = [0]
+        elif difficulty == 1:
+            pdf = pd.read_sql("SELECT * FROM easy_pdf",db)['0'].tolist()
+            ints = pd.read_sql("SELECT * FROM easy_ints",db)['0'].tolist()
+        elif difficulty == 2:
+            pdf = pd.read_sql("SELECT * FROM mod_pdf",db)['0'].tolist()
+            ints = pd.read_sql("SELECT * FROM mod_ints",db)['0'].tolist()
+        elif difficulty == 3:
+            pdf = pd.read_sql("SELECT * FROM hard_pdf",db)['0'].tolist()
+            ints = pd.read_sql("SELECT * FROM hard_ints",db)['0'].tolist()
+        else:
+            pdf = pd.read_sql("SELECT * FROM epic_pdf",db)['0'].tolist()
+            ints = pd.read_sql("SELECT * FROM epic_ints",db)['0'].tolist() 
+
+    # calculate stress and intensity
+    stress = get_stress(pdf)
+    intensity = get_intensity(ints)
   
     # information to be displayed for the athlete
-    todays_run = get_today(mpace_hr,intensity,stress,difficulty)
+    todays_run = get_today(mpace_hr,intensity,stress)
     display = get_display(difficulty,todays_run)
     dist = display[0]
     pace = display[1]
 
-    return render_template("output.html", diff = difficulty, stress = stress, dist = dist, pace = pace, day = day_class)
+    return render_template("output.html", diff = difficulty,
+                     stress = stress, dist = dist, pace = pace, day = day_class)
 
-# method: slides()
-# function: renders slides page
 @app.route('/slides')
 def slides():
+    """
+    function: renders slides page
+    """
+
     return render_template("slides.html")

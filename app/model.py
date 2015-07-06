@@ -1,14 +1,38 @@
-from bisect import bisect
 import datetime
 import random
+from bisect import bisect
 
-#method: get_difficulty(prob_list,last_acts)
-#function: determines daily run difficulty
-#arguments:
-# - prob_list: markov chain probability dictionary (matrix)
-# - last_acts: users last three activities
-#returns: daily run difficulty
+def get_pattern(days):
+    """
+    function: creates difficulty pattern string
+    arguments:
+        1) days: list of last three days activities
+    returns: last three days activities (string) 
+    """
+
+    p = ''
+    for day in days:
+        if day == 'rest':
+            p = p + '0'
+        elif day == 'easy':
+            p = p + '1'
+        elif day == 'moderate':
+            p = p + '2'
+        elif day == 'hard':
+            p = p + '3'
+        elif day == 'epic':
+            p = p + '4'
+    return p
+
 def get_difficulty(prob_list,last_acts):
+    """
+    function: determines daily run difficulty
+    arguments:
+        1) markov chain probability dictionary
+        2) last_acts: users last three activities  
+    returns: daily run difficulty (int)
+    """
+
     diff = 0
     # builds cdf from probabilities
     probs = prob_list[last_acts]
@@ -24,26 +48,31 @@ def get_difficulty(prob_list,last_acts):
 
     return diff 
 
-#method: get_stress(pdfs,diff)
-#function: select today's exact numerical run stress
-#arguments:
-# - pdfs: probability distribution function for run stresses
-#         based on run difficulty
-# - diff: today's run difficulty determined in get_difficulty()
-# returns: numerical run stress
-def get_stress(pdfs,diff):
-    stress = random.choice(pdfs[diff])
+def get_stress(pdf):
+    """
+    function: select today's exact numerical run stress
+    arguments:
+        1) pdf: probability distribution function for run
+                stress based on run difficulty
+        2) diff: today's run difficulty determined in 
+                 get_difficulty()
+    return: run stress (float)
+    """
+
+    stress = random.choice(pdf)
     # determines stress from class pdf
     while stress > 0.87:
-        stress = random.choice(pdfs[diff])
+        stress = random.choice(pdf)
     return stress
 
-#method: get_class(diff)
-#function: gets text belonging to run class
-#arguments:
-# - diff: run class
-#returns: string version of run class
 def get_class(diff):
+    """
+    function: gets text belonging to run class
+    arguments:
+        1) diff: numeric label for run difficulty 
+    return: run class description (string)
+    """
+
     if diff == 0:
         return 'rest'
     elif diff == 1:
@@ -57,15 +86,17 @@ def get_class(diff):
     else:
         return 'whoops!'
 
-#method: get_today(mpace_hr,intesnity,stress,diff)
-#function: determines distance and pace for the day
-#arguments:
-# - mpace_hr: marathon pace in hours
-# - intensity: run intensity determined from pace
-# - stress: run stress for today
-# - diff: run difficulty for today
-#returns: [dist,space] in string format    
-def get_today(mpace_hr,intensity,stress,diff):
+def get_today(mpace_hr,intensity,stress):
+    """
+    function: determine distance and pace for the day
+    arguments:
+        1) mpace_hr: marathon pace in hours
+        2) intensity: run intensity determined from pace
+        3) stress: numerical run stress for today
+    returns: [dist, pace] (string) 
+    """
+
+    #marathon distance
     mdist = 26.2
 
     # calculates pace in seconds/mile
@@ -73,7 +104,7 @@ def get_today(mpace_hr,intensity,stress,diff):
     pace = 0
 
     # determines pace and distance if not a rest day
-    if diff != 0:
+    if stress >= 0:
         pace = mpace / intensity
     dist = stress * mdist / (intensity ** 2) 
 
@@ -97,13 +128,15 @@ def get_today(mpace_hr,intensity,stress,diff):
 
     return [dist,space]
 
-#method: get_display(diff,today)
-#function: converts results to display format
-#arguments: 
-# - diff: today's run difficulty
-# - today: [dist,pace] for today
-#returns: results to be displayed   
 def get_display(diff,today):
+    """
+    function: converts results to display format
+    arguments:
+        1) diff: today's run difficulty class
+        2) today: list of today's distance and pace
+    returns: results to be displayed (string)
+    """
+
     if diff == 0:
         dist = '0 miles'
         pace = 'rest!'
@@ -112,16 +145,17 @@ def get_display(diff,today):
         pace = today[1] + ' / mile'
     return [dist,pace]
 
-#method: get_intensity(diff,intensities)
-#function: calculates run intensity based on run class
-#arguments:
-# - diff: today's run class
-# - intensities: dictionary containing intensity distributions
-#                for each run class
-#returns: today's intensity
-def get_intensity(diff,intensities):
+def get_intensity(ints):
+    """
+    function: calculates run intensity based on run class
+    arguments:
+        1) diff: today's run class
+        2) ints: intensity distribution for run class
+    returns: today's run intensity (float)
+    """
+
     intensity = 0
     # limits intensity to reasonable range and random selects
     while (intensity < 0.8) or (intensity > 1.2):
-        intensity = random.choice(intensities[int(diff)]) 
+        intensity = random.choice(ints) 
     return intensity
