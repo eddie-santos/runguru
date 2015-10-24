@@ -55,6 +55,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="jumbotron">
+          <p>
+               Using successful training patterns from 3,000+ marathon runners to provide optimized daily marathon training! 
+          </p>
           <h3>Select your marathon pace</h3>
           <form  action="/output" method="GET">
               <label for="mpace"><p style = "color:white">marathon pace </p></label>
@@ -67,7 +70,7 @@
                 <option value="3.50">3:30</option>
                 <option value="3.75">3:45</option>
                 <option value="4.00">4:00</option>
-                <option value="4.25">4:15</option>
+                <option value="4.25" selected="selected">4:15</option>
                 <option value="4.50">4:30</option>
                 <option value="4.75">4:45</option>
                 <option value="5.00">5:00</option>
@@ -76,38 +79,53 @@
                 <option value="5.75">5:45</option>
                 <option value="6.00">6:00</option>
               </select>
-            <h3>Enter your recent runs</h3>
+            <h3>Enter your recent run difficulties</h3>
             <div class="form-group">
               <label for="day1"><p style = "color:white">yesterday </p></label>
               <select id="day1" name="day1">
-                <option value="rest">rest</option>
-                <option value="easy">easy</option>
-                <option value="moderate">moderate</option>
-                <option value="hard">hard</option>
-                <option value="epic">epic</option>
+                <option value="rest">Rest</option>
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
+                <option value="epic">Epic</option>
               </select>
               <br>
               <label for="day2"><p style = "color:white">two days ago </p></label>
               <select id="day2" name="day2">
-                <option value="rest">rest</option>
-                <option value="easy">easy</option>
-                <option value="moderate">moderate</option>
-                <option value="hard">hard</option>
-                <option value="epic">epic</option>
+                <option value="rest">Rest</option>
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
+                <option value="epic">Epic</option>
               </select>
               <br>
               <label for="day3"><p style = "color:white">three days ago </p></label>
               <select id="day3" name="day3">
-                <option value="rest">rest</option>
-                <option value="easy">easy</option>
-                <option value="moderate">moderate</option>
-                <option value="hard">hard</option>
-                <option value="epic">epic</option>
+                <option value="rest">Rest</option>
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
+                <option value="epic">Epic</option>
               </select>
               <br>
           <div>
-            <button type="submit" class="btn btn-default btn-lg">Go!</button>
+            <button type="submit" class="btn btn-default btn-lg">Run!</button>
           </div>
+          <h3>Quick guide</h3>
+          <p>
+             Your current marathon pace informs us of your fitness level (estimate is okay), and the run difficulties
+             are based on the following mileage at marathon pace:
+             <br><br>
+             Rest: 0 miles 
+             <br>
+             Easy: 0.1 - 5 miles
+             <br>
+             Moderate: 5 - 8 miles
+             <br>
+             Hard: 8 - 13 miles
+             <br>
+             Epic: 13 - 18 miles
+          </p>
             </div>
           </div>
         </form>
